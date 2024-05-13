@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "703327265743",
+    "project_id": "credit-card-scanner-project",
+    "storage_bucket": "credit-card-scanner-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:703327265743:android:c07804e407291fb813e8ba",
+        "android_client_info": {
+          "package_name": "com.project.credit_card_scanner.credit_card_scanner_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "703327265743-5i09u961u27hko95anv9te12skksvqb7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.project.credit_card_scanner.credit_card_scanner_project",
+            "certificate_hash": "72f4f7c95429cc46213b1d456bd5fc220d082825"
+          }
+        },
+        {
+          "client_id": "703327265743-skv0j4e8dqkv3pvl49jffftv3873di6h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAP9G8DXsXAZVv0FFb2Ph9Prk_qvCXlSoo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "703327265743-skv0j4e8dqkv3pvl49jffftv3873di6h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "703327265743-op0otmlrgi6dsr8h7q70nojbf489kn5q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.project.creditcardscanner.creditCardScannerProject"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
