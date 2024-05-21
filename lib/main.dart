@@ -12,16 +12,14 @@ import 'models/card_info.dart';
 import 'models/card_orientation.dart';
 
 
-import 'firebase_options.dart';
-import 'package:firebase_core/firebase_core.dart';
+
 
 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+
+
   runApp(const MaterialApp(home: LoginScreen()));
 }
 

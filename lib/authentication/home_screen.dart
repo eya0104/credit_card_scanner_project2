@@ -1,10 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import '../main.dart';
 import '../models/user_model.dart';
 import 'login_screen.dart';
-
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -14,28 +11,39 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
 
   @override
   void initState() {
     super.initState();
-    FirebaseFirestore.instance
-        .collection("users")
-        .doc(user!.uid)
-        .get()
-        .then((value) {
-      this.loggedInUser = UserModel.fromMap(value.data());
-      setState(() {});
-    });
+    // Call your method to fetch user data here
+    fetchUserData();
+  }
+
+  // Method to fetch user data
+  void fetchUserData() {
+    // Simulated user data
+    loggedInUser = UserModel(
+      firstName: 'John',
+      secondName: 'Doe',
+      email: 'john.doe@example.com',
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Hello User ! "),
+        title: const Text("Hello User!"),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () {
+              logout(context);
+            },
+          ),
+        ],
       ),
       body: Center(
         child: Padding(
@@ -48,27 +56,33 @@ class _HomeScreenState extends State<HomeScreen> {
                 "Welcome Back",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              SizedBox(
-                height: 10,
+              SizedBox(height: 10),
+              Text(
+                "${loggedInUser.firstName} ${loggedInUser.secondName}",
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-              Text("${loggedInUser.firstName} ${loggedInUser.secondName}",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w500,
-                  )),
-              Text("${loggedInUser.email}",
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontWeight: FontWeight.w500,
-                  )),
-              SizedBox(
-                height: 15,
+              Text(
+                "${loggedInUser.email}",
+                style: TextStyle(
+                  color: Colors.black54,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-              ActionChip(
-                  label: Text("SignOut"),
-                  onPressed: () {
-                    logout(context);
-                  }),
+              SizedBox(height: 15),
+              ElevatedButton(
+                onPressed: () {
+                  // Navigate to the scan card screen
+                  // Replace MainScreen() with your desired screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MainScreen()),
+                  );
+                },
+                child: Text('Scan Your Card'),
+              ),
             ],
           ),
         ),
@@ -76,10 +90,11 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  // the logout function
+  // Logout function
   Future<void> logout(BuildContext context) async {
-    await FirebaseAuth.instance.signOut();
+    // Navigate to the login screen
     Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => LoginScreen()));
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+    );
   }
 }
