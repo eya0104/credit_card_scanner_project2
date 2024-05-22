@@ -1,7 +1,8 @@
 const {deleteCardInfo} = require('../controllers/card_info.js');
-const CardInfoModel = require('../models/card_info');
+const CardInfo = require('../models/card_info');
 
 
+//Get all card info
 const getAllCardInfo = async () => {
   try {
     const cardInfo = await CardInfo.find();
@@ -11,6 +12,8 @@ const getAllCardInfo = async () => {
   }
 };
 
+
+//Get card info by Id
 const getCardInfoById = async (id) => {
   try {
     const cardInfo = await CardInfo.findById(id);
@@ -24,6 +27,8 @@ const getCardInfoById = async (id) => {
   }
 };
 
+
+//Update card info by Id
 const updateCardInfoById = async (id, updateData) => {
   try {
     const updatedCardInfo = await CardInfo.findByIdAndUpdate(id, updateData, { new: true });
@@ -37,6 +42,8 @@ const updateCardInfoById = async (id, updateData) => {
   }
 };
 
+
+//Delete card info by Id
 const deleteCardInfoById = async (id) => {
   try {
     const deletedCardInfo = await CardInfo.findByIdAndDelete(id);

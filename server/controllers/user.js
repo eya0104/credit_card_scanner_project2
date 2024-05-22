@@ -8,7 +8,7 @@ const argon2 = require ('argon2');
  async function login(req, res) {
   try {
     const { email, password } = req.body;
-    const user = await UserServices.getUserByEmail({ email });
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     } // 404: Resource not found

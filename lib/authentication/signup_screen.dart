@@ -186,7 +186,7 @@ class _SignupScreenState extends State<SignupScreen> {
   void signUp(String username, String email, String password) async {
     try {
       final response = await http.post(
-        Uri.parse('http://localhost:3000/api/user/register'), // Update with your backend signup endpoint URL
+        Uri.parse('https://backendapi-tv7m.onrender.com/api/users/register'), // Update with your backend signup endpoint URL
         headers: {
           'Content-Type': 'application/json',
         },

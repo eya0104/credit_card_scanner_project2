@@ -3,8 +3,6 @@ const router = express.Router();
 const cardInfoController = require('../controllers/card_info');
 
 
-
-
 // Route to get all card info
 router.get('/get', async (req, res) => {
   try {
