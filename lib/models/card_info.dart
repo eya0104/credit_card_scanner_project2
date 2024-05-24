@@ -15,4 +15,22 @@ class CardInfo {
   String toString() {
     return 'Card Info\nnumber: $number\ntype: $type\nexpiry: $expiry';
   }
+
+  // Add factory constructor for creating a CardInfo instance from a JSON object
+  factory CardInfo.fromJson(Map<String, dynamic> json) {
+    return CardInfo(
+      number: json['cardNumber'],
+      expiry: json['expirationDate'],
+      type: json['type'],
+    );
+  }
+
+  // Add method for converting a CardInfo instance to a JSON object
+  Map<String, dynamic> toJson() {
+    return {
+      'cardNumber': number,
+      'expirationDate': expiry,
+      'type': type,
+    };
+  }
 }

@@ -1,4 +1,3 @@
-
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:credit_card_scanner_project/widget/text_overlay_widget.dart';
@@ -18,6 +17,7 @@ import '../utils/logger.dart';
 import '../utils/scanner_widget_controller.dart';
 import 'camera_overlay_widget.dart';
 import 'camera_widget.dart';
+import '../services/card_info_service.dart';
 
 class ScannerWidget extends StatefulWidget {
   final CardOrientation overlayOrientation;
@@ -54,6 +54,8 @@ class _ScannerWidgetState extends State<ScannerWidget>
   late CameraDescription _camera;
   late ScannerWidgetController _scannerController;
   CameraController? _cameraController;
+
+  final CardInfoService _cardInfoService = CardInfoService();
 
   @override
   void initState() {
@@ -218,9 +220,16 @@ class _ScannerWidgetState extends State<ScannerWidget>
     }
   }
 
-  void _handleData(CardInfo cardInfo) {
+  void _handleData(CardInfo cardInfo) async {
     final cardScannedCallback = _scannerController.onCardScanned;
     cardScannedCallback?.call(cardInfo);
+
+    try {
+      await _cardInfoService.sendCardData(cardInfo);
+      Logger.log('Card Data', 'Card data sent successfully');
+    } catch (e) {
+      Logger.log('Card Data', 'Error sending card data: $e');
+    }
   }
 
   void _handleError(ScannerException exception) {

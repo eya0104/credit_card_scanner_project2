@@ -1,8 +1,7 @@
 import 'dart:core';
-import 'package:credit_card_scanner_project/utils/string_extension.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import '../models/card_info.dart';
-
+import '../utils/string_extension.dart';
 
 class CardParserUtil {
   final int _cardNumberLength = 16;
@@ -12,25 +11,25 @@ class CardParserUtil {
   final String _cardVisaParam = '4';
   final String _cardMasterCardParam = '5';
 
-  /*final _expiryDateRegEx = r'/^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$/;';*/
-  final _textDetector = TextRecognizer(script: TextRecognitionScript.latin);
+  final TextRecognizer _textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
 
   Future<CardInfo?> detectCardContent(InputImage inputImage) async {
-    var input = await _textDetector.processImage(inputImage);
-
-    var clearElements = input.blocks.map((e) => e.text.clean()).toList();
+    final recognizedText = await _textRecognizer.processImage(inputImage);
+    final clearElements = recognizedText.blocks.map((block) => block.text.clean()).toList();
 
     try {
-      var possibleCardNumber = clearElements.firstWhere((input) {
+      final possibleCardNumber = clearElements.firstWhere((input) {
         final cleanValue = input.fixPossibleMisspells();
-        return (cleanValue.length == _cardNumberLength) &&
-            (int.tryParse(cleanValue) ?? -1) != -1;
+        return (cleanValue.length == _cardNumberLength) && (int.tryParse(cleanValue) != null);
       });
-      var cardType = _getCardType(possibleCardNumber);
-      var expire = _getExpireDate(clearElements);
+
+      final cardType = _getCardType(possibleCardNumber);
+      final expirationDate = _getExpireDate(clearElements);
+
+
       return CardInfo(
-          number: possibleCardNumber, type: cardType, expiry: expire);
-    } catch (e, _) {
+          number: possibleCardNumber, type: cardType, expiry: expirationDate);
+    } catch (e) {
       return null;
     }
   }
@@ -39,24 +38,22 @@ class CardParserUtil {
     try {
       final possibleDate = input.firstWhere((input) {
         final cleanValue = input.fixPossibleMisspells();
-        if (cleanValue.length == 4) {
-          return true;
-        }
-        return false;
+        return cleanValue.length == 4 && RegExp(r'^(0[1-9]|1[0-2])([0-9]{2})$').hasMatch(cleanValue);
       });
       return possibleDate.fixPossibleMisspells().possibleDateFormatted();
-    } catch (e, _) {
+    } catch (e) {
       return '';
     }
   }
 
+
   String _getCardType(String input) {
-    if (input[0] == _cardVisaParam) {
+    if (input.startsWith(_cardVisaParam)) {
       return _cardVisa;
-    }
-    if (input[0] == _cardMasterCardParam) {
+    } else if (input.startsWith(_cardMasterCardParam)) {
       return _cardMasterCard;
+    } else {
+      return _cardUnknown;
     }
-    return _cardUnknown;
   }
 }
